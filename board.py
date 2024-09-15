@@ -22,6 +22,7 @@ class Board:
         self.white_bishops = []
         self.white_queen = []
         self.white_king = []
+        self.initial_selected = None
 
     def get_grid(self):
         return self.boardMap
@@ -75,10 +76,8 @@ class Board:
 
         self.load_pieces_pos()
 
-   
+    def get_initial_selected(self):
+        return self.initial_selected
 
-
-
-
-
-
+    def set_initial_selected(self, x, y):
+        self.initial_selected = (x, y)

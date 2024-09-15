@@ -1,3 +1,4 @@
+import enum
 import pygame
 from pygame.time import Clock
 from board import Board
@@ -5,6 +6,27 @@ from board import Board
 WINDOW_LENGTH = 800
 WINDOW_HEIGHT = 800
 SQUARE_SIZE = WINDOW_LENGTH / 8
+
+def get_square(board, square_x: int, square_y: int):
+    grid = board.get_grid()
+    
+    for x, col in enumerate(grid):
+        for y, row in enumerate(col):
+            if not ((x * SQUARE_SIZE < square_x) and ((x + 1) * SQUARE_SIZE > square_x)):
+                continue
+
+            if not ((y * SQUARE_SIZE < square_y) and ((y + 1) * SQUARE_SIZE > square_y)):
+                continue
+
+            return (x, y)
+                
+
+def select_square(board, mouse_pos):
+    # Activates when mouse is clicked
+    square_coord = get_square(board, mouse_pos[0], mouse_pos[1])
+    
+    pass
+    
 
 def render_board(board):
     grid = board.get_grid()
@@ -30,7 +52,7 @@ def render_board(board):
             piece = grid[x][y]
             if piece != None:
                 print("@@@8", piece, row)
-                piece_rect = piece.get_image().get_rect()
+                piece_rectI = piece.get_image().get_rect()
                 piece_rect.center = (x * SQUARE_SIZE + SQUARE_SIZE / 2, y * SQUARE_SIZE + SQUARE_SIZE / 2)
                 SCREEN.blit(piece.get_image(), piece_rect)
                 #pygame.draw.rect(SCREEN, (0, 88, 5), square, 0)
@@ -56,7 +78,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
+            
+            if event.type == pygame.MOUSEBUTTONUP:
+                action = select_square(board, pygame.mouse.get_pos())
         pygame.display.update()
         CLOCK.tick(60)
 
